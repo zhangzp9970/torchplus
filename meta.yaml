@@ -13,10 +13,10 @@ requirements:
     - python
   run:
     - python
-    - 'pillow>=8.3.1'
-    - 'numpy>=1.20.3'
-    - 'pytorch>=1.8.1'
-    - 'torchvision>=0.9.1'
+    - pillow
+    - numpy
+    - pytorch
+    - torchvision
 about:
   summary: Torchplus is a utilities library that extends pytorch and torchvision
   home: https://github.com/zhangzp9970/torchplus
