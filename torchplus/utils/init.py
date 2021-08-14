@@ -5,13 +5,11 @@ import random
 import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
-from torch.utils.tensorboard import SummaryWriter
 
 
 def init_seed(seed: int) -> None:
     cudnn.benchmark = True
     cudnn.deterministic = True
-    seed = 9970
     random.seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
@@ -30,10 +28,6 @@ def get_device() -> torch.device:
     return torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-def get_summary_writer(root_dir: str = None) -> SummaryWriter:
-    if root_dir is not None:
-        now = datetime.datetime.now().strftime('%b%d_%H-%M-%S')
-        log_dir = f'{root_dir}/{now}'
-        return SummaryWriter(log_dir)
-    else:
-        return SummaryWriter()
+def get_log_dir(root_dir: str = './log') -> str:
+    now = datetime.datetime.now().strftime('%b%d_%H-%M-%S')
+    log_dir = f'{root_dir}/{now}'
