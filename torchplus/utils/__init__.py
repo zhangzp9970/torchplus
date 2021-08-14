@@ -1,3 +1,3 @@
-from .init import init_seed, auto_save_file
+from .init import Init
 
-__all__ = ('init_seed', 'auto_save_file')
+__all__ = ('Init')
