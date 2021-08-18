@@ -74,6 +74,7 @@ class KSDD(VisionDataset):
 
     def __make_dir_lists(self, root: str, fold: int = 3) -> None:
         total_dir_list = os.listdir(root)
+        total_dir_list.sort()
         total_dir_list_len = len(total_dir_list)
         train_dir_list_len = int(total_dir_list_len*(1.0-1.0/float(fold)))
         test_dir_list_len = total_dir_list_len-train_dir_list_len
@@ -87,6 +88,7 @@ class KSDD(VisionDataset):
         for folder_name in dir_list:
             file_list = os.listdir(os.path.join(
                 self.root, self.base_folder, folder_name))
+            file_list.sort()
             for i, file in enumerate(file_list):
                 self.X.append(os.path.join(self.root, self.base_folder, folder_name, file)) if i % 2 == 0 else self.Y.append(
                     os.path.join(self.root, self.base_folder, folder_name, file))
