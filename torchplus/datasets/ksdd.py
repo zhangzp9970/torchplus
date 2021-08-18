@@ -116,7 +116,7 @@ class KSDD(VisionDataset):
         return img, label, pon
 
     def __len__(self) -> int:
-        return len(self.X)
+        return len(self.GetX)
 
     def __download(self) -> None:
         if self.__check_integrity():
