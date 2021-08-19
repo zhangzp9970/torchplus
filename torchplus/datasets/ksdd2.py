@@ -51,20 +51,20 @@ class KSDD2(VisionDataset):
                 os.path.join(self.root, self.file_name), os.path.join(self.root, self.base_folder)))
             extract_archive(os.path.join(self.root, self.file_name),
                             os.path.join(self.root, self.base_folder))
-            if self.train:
-                self.__make_item_lists('train')
-            else:
-                self.__make_item_lists('test')
-            self.__make_pon_lists()
-            if self.positive_only:
-                self.__make_p_lists()
-                self.GetX = self.Xpos
-                self.GetY = self.Ypos
-                self.GetPoN = self.PoNpos
-            else:
-                self.GetX = self.X
-                self.GetY = self.Y
-                self.GetPoN = self.PoN
+        if self.train:
+            self.__make_item_lists('train')
+        else:
+            self.__make_item_lists('test')
+        self.__make_pon_lists()
+        if self.positive_only:
+            self.__make_p_lists()
+            self.GetX = self.Xpos
+            self.GetY = self.Ypos
+            self.GetPoN = self.PoNpos
+        else:
+            self.GetX = self.X
+            self.GetY = self.Y
+            self.GetPoN = self.PoN
 
     def __download(self) -> None:
         if self.__check_integrity():
