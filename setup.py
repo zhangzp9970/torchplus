@@ -1,13 +1,12 @@
 from setuptools import setup, find_packages
 import sys
 import os
-from torchplus import __version__ as __version__
 
 parent_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(parent_dir)
 
 setup(name='torchplus',
-      version=__version__,
+      version='0.0.4',
       author='Zeping Zhang',
       license='GPL-v3',
       author_email='zhangzp9970@outlook.com',
