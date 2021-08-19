@@ -1,7 +1,7 @@
 from torchplus import datasets
 from torchplus import nn
 from torchplus import utils
-from .version import __version__ as torch_plus_version
+from .version import __version__ as __version__
 try:
     from torch import __version__ as torch_version
 except ImportError:
