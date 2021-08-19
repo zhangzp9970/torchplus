@@ -1,12 +1,12 @@
 package:
   name: torchplus
-  version: 0.0.3
+  version: 0.0.4
 
 source:
   path: C:\Users\zhang\Documents\GitHub\torchplus
 
 build:
-  number: 5
+  number: 1
 
 requirements:
   build:

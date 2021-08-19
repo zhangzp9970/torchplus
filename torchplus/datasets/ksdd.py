@@ -2,19 +2,30 @@ import os
 from typing import Any, Callable, Optional, Tuple
 
 from PIL import Image
+from torchvision.datasets.utils import (check_integrity,
+                                        download_and_extract_archive,
+                                        extract_archive)
 from torchvision.datasets.vision import VisionDataset
-from torchvision.transforms.transforms import Compose, Grayscale, Resize, ToTensor
-from torchvision.datasets.utils import check_integrity, download_and_extract_archive, extract_archive
+from torchvision.transforms.transforms import (Compose, Grayscale, Resize,
+                                               ToTensor)
 
 
 class KSDD(VisionDataset):
-    base_folder = "KolektorSDD"
-    url = "http://go.vicos.si/kolektorsdd"
-    file_name = "KolektorSDD.zip"
-    zip_md5 = "2b094030343c1cd59df02203ac6c57a0"
+    ksdd_base_folder = "KolektorSDD"
+    ksdd_url = "http://go.vicos.si/kolektorsdd"
+    ksdd_file_name = "KolektorSDD.zip"
+    ksdd_zip_md5 = "2b094030343c1cd59df02203ac6c57a0"
+    ksdd_boxes_base_folder = "KolektorSDD-boxes"
+    ksdd_boxes_url = "http://go.vicos.si/kolektorsddboxes"
+    ksdd_boxes_file_name = "KolektorSDD-boxes.zip"
+    ksdd_boxes_zip_md5 = "4e559e7c4be5ab5001db8243c1b125df"
+    base_folder = ""
+    url = ""
+    file_name = ""
+    zip_md5 = ""
     train_dir_list = []
     test_dir_list = []
-    data_list = []
+    dir_list = []
     X = []
     Y = []
     PoN = []
@@ -32,7 +43,7 @@ class KSDD(VisionDataset):
         ]
     )
 
-    def __init__(self, root: str, train: bool = True, fold: Optional[int] = 3, transform: Optional[Callable] = None, target_transform: Optional[Callable] = None, download: bool = False, positive_only: Optional[bool] = False) -> None:
+    def __init__(self, root: str, train: bool = True, fold: Optional[int] = 3, transform: Optional[Callable] = None, target_transform: Optional[Callable] = None, download: bool = False, positive_only: Optional[bool] = False, box: Optional[bool] = False) -> None:
         super(KSDD, self).__init__(root=root, transform=transform,
                                    target_transform=target_transform)
         self.root = root
@@ -42,6 +53,17 @@ class KSDD(VisionDataset):
         self.target_transform = target_transform
         self.download = download
         self.positive_only = positive_only
+        self.box = box
+        if self.box:
+            self.base_folder = self.ksdd_boxes_base_folder
+            self.url = self.ksdd_boxes_url
+            self.file_name = self.ksdd_boxes_file_name
+            self.zip_md5 = self.ksdd_boxes_zip_md5
+        else:
+            self.base_folder = self.ksdd_base_folder
+            self.url = self.ksdd_url
+            self.file_name = self.ksdd_file_name
+            self.zip_md5 = self.ksdd_zip_md5
         if self.download:
             self.__download()
 
@@ -57,10 +79,10 @@ class KSDD(VisionDataset):
         self.__make_dir_lists(root=os.path.join(
             self.root, self.base_folder), fold=self.fold)
         if self.train:
-            dir_list = self.train_dir_list
+            self.dir_list = self.train_dir_list
         else:
-            dir_list = self.test_dir_list
-        self.__make_item_lists(dir_list)
+            self.dir_list = self.test_dir_list
+        self.__make_item_lists(self.dir_list)
         self.__make_pon_lists()
         if self.positive_only:
             self.__make_p_lists()
