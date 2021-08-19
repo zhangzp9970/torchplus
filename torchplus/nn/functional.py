@@ -23,7 +23,15 @@ def normalize(tensor: torch.Tensor, dim, keepdim: Optional[bool] = False, inplac
     return tensor
 
 
-def mse_with_weight_loss(input: torch.Tensor, target: torch.Tensor, weight: torch.Tensor, size_average: Optional[bool] = None, reduce: Optional[bool] = None, reduction: str = "mean") -> torch.Tensor:
-    inputw = input*weight
-    targetw = target*weight
-    return F.mse_loss(inputw, targetw, size_average=size_average, reduce=reduce, reduction=reduction)
+def mse_with_weight_loss(input: torch.Tensor, target: torch.Tensor, weight: torch.Tensor, size_average: Optional[bool] = None, reduce: Optional[bool] = None, reduction: str = 'mean') -> torch.Tensor:
+    mse = F.mse_loss(input, target, size_average=size_average,
+                     reduce=reduce, reduction='none')
+    if reduction == 'none':
+        mse = mse*weight
+    elif reduction == 'mean':
+        mse = torch.mean(mse*weight)
+    elif reduction == 'sum':
+        mse = torch.sum(mse*weight)
+    else:
+        raise NotImplementedError()
+    return mse
