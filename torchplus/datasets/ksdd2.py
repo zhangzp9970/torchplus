@@ -51,6 +51,14 @@ class KSDD2(VisionDataset):
                 os.path.join(self.root, self.file_name), os.path.join(self.root, self.base_folder)))
             extract_archive(os.path.join(self.root, self.file_name),
                             os.path.join(self.root, self.base_folder))
+        if os.path.exists(os.path.join(
+                self.root, self.base_folder, 'train', '10301 (copy).png')):
+            os.remove(os.path.join(
+                self.root, self.base_folder, 'train', '10301 (copy).png'))
+        if os.path.exists(os.path.join(
+                self.root, self.base_folder, 'train', '10301_GT (copy).png')):
+            os.remove(os.path.join(
+                self.root, self.base_folder, 'train', '10301_GT (copy).png'))
         if self.train:
             self.__make_item_lists('train')
         else:
@@ -122,4 +130,3 @@ class KSDD2(VisionDataset):
 
     def __len__(self) -> int:
         return len(self.GetX)
-
