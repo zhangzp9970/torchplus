@@ -29,12 +29,6 @@ class KSDD(VisionDataset):
     X = []
     Y = []
     PoN = []
-    Xpos = []
-    Ypos = []
-    PoNpos = []
-    GetX = []
-    GetY = []
-    GetPoN = []
 
     basic_transform = Compose(
         [
@@ -43,7 +37,7 @@ class KSDD(VisionDataset):
         ]
     )
 
-    def __init__(self, root: str, train: bool = True, fold: Optional[int] = 3, transform: Optional[Callable] = None, target_transform: Optional[Callable] = None, download: bool = False, positive_only: Optional[bool] = False, box: Optional[bool] = False) -> None:
+    def __init__(self, root: str, train: bool = True, fold: Optional[int] = 3, transform: Optional[Callable] = None, target_transform: Optional[Callable] = None, download: bool = False, box: Optional[bool] = False) -> None:
         super(KSDD, self).__init__(root=root, transform=transform,
                                    target_transform=target_transform)
         self.root = root
@@ -52,7 +46,6 @@ class KSDD(VisionDataset):
         self.transform = transform
         self.target_transform = target_transform
         self.download = download
-        self.positive_only = positive_only
         self.box = box
         if self.box:
             self.base_folder = self.ksdd_boxes_base_folder
@@ -84,15 +77,6 @@ class KSDD(VisionDataset):
             self.dir_list = self.test_dir_list
         self.__make_item_lists(self.dir_list)
         self.__make_pon_lists()
-        if self.positive_only:
-            self.__make_p_lists()
-            self.GetX = self.Xpos
-            self.GetY = self.Ypos
-            self.GetPoN = self.PoNpos
-        else:
-            self.GetX = self.X
-            self.GetY = self.Y
-            self.GetPoN = self.PoN
 
     def __make_dir_lists(self, root: str, fold: int = 3) -> None:
         total_dir_list = os.listdir(root)
@@ -119,17 +103,10 @@ class KSDD(VisionDataset):
         for y in self.Y:
             self.PoN.append(True if self.__is_positive(y) else False)
 
-    def __make_p_lists(self) -> None:
-        for i, pon in enumerate(self.PoN):
-            if pon:
-                self.Xpos.append(self.X[i])
-                self.Ypos.append(self.Y[i])
-                self.PoNpos.append(self.PoN[i])
-
     def __getitem__(self, index: int) -> Tuple[Any, Any, Any]:
-        img = Image.open(self.GetX[index])
-        label = Image.open(self.GetY[index])
-        pon = self.GetPoN[index]
+        img = Image.open(self.X[index])
+        label = Image.open(self.Y[index])
+        pon = self.PoN[index]
         img = self.basic_transform(img)
         label = self.basic_transform(label)
         if self.transform is not None:
@@ -140,7 +117,7 @@ class KSDD(VisionDataset):
         return img, label, pon
 
     def __len__(self) -> int:
-        return len(self.GetX)
+        return len(self.X)
 
     def __download(self) -> None:
         if self.__check_integrity():

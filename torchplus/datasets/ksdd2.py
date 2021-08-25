@@ -6,8 +6,7 @@ from torchvision.datasets.utils import (check_integrity,
                                         download_and_extract_archive,
                                         extract_archive)
 from torchvision.datasets.vision import VisionDataset
-from torchvision.transforms.transforms import (Compose, Grayscale, Resize,
-                                               ToTensor)
+from torchvision.transforms.transforms import (Compose, Resize, ToTensor)
 
 
 class KSDD2(VisionDataset):
@@ -18,12 +17,6 @@ class KSDD2(VisionDataset):
     X = []
     Y = []
     PoN = []
-    Xpos = []
-    Ypos = []
-    PoNpos = []
-    GetX = []
-    GetY = []
-    GetPoN = []
 
     basic_transform = Compose(
         [
@@ -31,7 +24,7 @@ class KSDD2(VisionDataset):
         ]
     )
 
-    def __init__(self, root: str, train: bool = True, transform: Optional[Callable] = None, target_transform: Optional[Callable] = None, download: bool = False, positive_only: Optional[bool] = False) -> None:
+    def __init__(self, root: str, train: bool = True, transform: Optional[Callable] = None, target_transform: Optional[Callable] = None, download: bool = False) -> None:
         super(KSDD2, self).__init__(root=root, transform=transform,
                                     target_transform=target_transform)
         self.root = root
@@ -39,7 +32,6 @@ class KSDD2(VisionDataset):
         self.transform = transform
         self.target_transform = target_transform
         self.download = download
-        self.positive_only = positive_only
         if self.download:
             self.__download()
         if not self.__check_integrity():
@@ -64,15 +56,6 @@ class KSDD2(VisionDataset):
         else:
             self.__make_item_lists('test')
         self.__make_pon_lists()
-        if self.positive_only:
-            self.__make_p_lists()
-            self.GetX = self.Xpos
-            self.GetY = self.Ypos
-            self.GetPoN = self.PoNpos
-        else:
-            self.GetX = self.X
-            self.GetY = self.Y
-            self.GetPoN = self.PoN
 
     def __download(self) -> None:
         if self.__check_integrity():
@@ -99,13 +82,6 @@ class KSDD2(VisionDataset):
         for y in self.Y:
             self.PoN.append(True if self.__is_positive(y) else False)
 
-    def __make_p_lists(self) -> None:
-        for i, pon in enumerate(self.PoN):
-            if pon:
-                self.Xpos.append(self.X[i])
-                self.Ypos.append(self.Y[i])
-                self.PoNpos.append(self.PoN[i])
-
     def __is_positive(self, y) -> bool:
         label = Image.open(y)
         label = self.basic_transform(label)
@@ -116,9 +92,9 @@ class KSDD2(VisionDataset):
             return False
 
     def __getitem__(self, index: int) -> Tuple[Any, Any, Any]:
-        img = Image.open(self.GetX[index])
-        label = Image.open(self.GetY[index])
-        pon = self.GetPoN[index]
+        img = Image.open(self.X[index])
+        label = Image.open(self.Y[index])
+        pon = self.PoN[index]
         img = self.basic_transform(img)
         label = self.basic_transform(label)
         if self.transform is not None:
@@ -129,4 +105,4 @@ class KSDD2(VisionDataset):
         return img, label, pon
 
     def __len__(self) -> int:
-        return len(self.GetX)
+        return len(self.X)
