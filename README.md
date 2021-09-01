@@ -11,10 +11,13 @@ torchplus is a utilities library that extends pytorch and torchvision
 
 ## Features
 
-* torchplus.datasets contains dataset loaders for KSDD
-* torchplus.nn contains a Feature normalize layer
-* torchplus.utils.init contains common init functions
+* torchplus.datasets contains dataset loaders for KSDD and KSDD2
+* torchplus.nn contains a Feature normalize layer and MSEWithWeightLoss
+* torchplus.utils.init contains common init functions and an accuracy counter inspired by [easydl](https://github.com/thuml/easydl)
 * continue developing...
+
+# Acknowledgements
+Inspired by [easydl](https://github.com/thuml/easydl) project from Tsinghua University
 ## License
 
 Copyright © 2021 Zeping Zhang
