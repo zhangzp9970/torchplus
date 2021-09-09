@@ -6,11 +6,13 @@ source:
   path: C:\Users\zhang\Documents\GitHub\torchplus
 
 build:
-  number: 1
+  noarch: python
+  number: 2
 
 requirements:
-  build:
+  host:
     - python
+    - pip
   run:
     - python
     - pillow
