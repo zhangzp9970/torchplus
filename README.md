@@ -16,7 +16,7 @@ torchplus is a utilities library that extends pytorch and torchvision
 * torchplus.utils.init contains common init functions and an accuracy counter inspired by [easydl](https://github.com/thuml/easydl)
 * continue developing...
 
-# Acknowledgements
+## Acknowledgements
 Inspired by [easydl](https://github.com/thuml/easydl) project from Tsinghua University
 ## License
 

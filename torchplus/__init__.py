@@ -1,6 +1,7 @@
 from torchplus import datasets
 from torchplus import nn
 from torchplus import utils
+from torchplus import transforms
 from .version import __version__ as __version__
 try:
     from torch import __version__ as torch_version
