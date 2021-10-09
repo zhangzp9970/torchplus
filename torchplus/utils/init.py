@@ -7,6 +7,7 @@ import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
 from torch.utils.tensorboard import SummaryWriter
+from multiprocessing import cpu_count
 
 
 class Init():
@@ -60,3 +61,6 @@ class Init():
             return self.writer
         except AttributeError:
             raise RuntimeError('tensorboard summary writer not set!')
+
+    def get_workers(self)->int:
+        return cpu_count() if os.name == "posix" else 0
