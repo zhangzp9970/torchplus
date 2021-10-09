@@ -3,7 +3,7 @@ package:
   version: 0.0.6
 
 source:
-  path: C:\Users\zhang\Documents\GitHub\torchplus
+  path: .\
 
 build:
   noarch: python
