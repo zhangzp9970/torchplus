@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-import torchvision.transforms.functional as F
+from torchvision.transforms.functional import *
 
 
 class Crop(nn.Module):
@@ -12,7 +12,7 @@ class Crop(nn.Module):
         self.width = width
 
     def forward(self, img):
-        return F.crop(img, self.top, self.left, self.height, self.width)
+        return crop(img, self.top, self.left, self.height, self.width)
 
     def __repr__(self):
         return self.__class__.__name__ + '(top={0},left={1},height={2},width={3})'.format(self.top, self.left, self.height, self.width)
