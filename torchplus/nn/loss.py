@@ -10,3 +10,12 @@ class MSEWithWeightLoss(nn.MSELoss):
 
     def forward(self, input: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
         return F.mse_with_weight_loss(input, target, self.weight, reduction=self.reduction)
+
+
+class PixelLoss(nn.Module):
+    def __init__(self, threshold: float = 0.0):
+        super().__init__()
+        self.threshold = threshold
+
+    def forward(self, im: torch.Tensor, im_gt: torch.Tensor) -> torch.float:
+        return F.pixel_loss(im, im_gt, self.threshold)

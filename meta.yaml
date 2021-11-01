@@ -1,13 +1,13 @@
 package:
   name: torchplus
-  version: 0.0.6
+  version: 0.0.7
 
 source:
   path: ./
 
 build:
   noarch: python
-  number: 3
+  number: 1
 
 requirements:
   host:
