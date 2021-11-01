@@ -1,3 +1,3 @@
-from .loss import MSEWithWeightLoss
+from .loss import MSEWithWeightLoss, PixelLoss
 
-__all__ = ('Normalize', 'MSEWithWeightLoss', 'PixelLoss')
+__all__ = ('MSEWithWeightLoss', 'PixelLoss')
