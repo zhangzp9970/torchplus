@@ -30,5 +30,5 @@ def pixel_loss(im: torch.Tensor, im_gt: torch.Tensor, threshold: float = 0.0):
     ToF = (torch.abs(im - im_gt) <= threshold)
     ToF = ToF.to(torch.float)
     pos = torch.count_nonzero(ToF)
-    acc = pos/total
-    return acc
+    loss = 1-pos/total
+    return loss
