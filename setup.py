@@ -6,7 +6,7 @@ parent_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(parent_dir)
 
 setup(name='torchplus',
-      version='0.0.7',
+      version='0.0.8',
       author='Zeping Zhang',
       license='GPL-v3',
       author_email='zhangzp9970@outlook.com',
@@ -15,4 +15,4 @@ setup(name='torchplus',
       include_package_data=True,
       packages=find_packages(parent_dir),
       python_requires='>=3.8',
-      install_requires=['torch', 'torchvision', 'pillow', 'numpy'])
+      install_requires=['torch', 'torchvision', 'pillow', 'numpy','tensorboard'])

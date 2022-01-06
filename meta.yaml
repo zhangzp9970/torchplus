@@ -1,13 +1,13 @@
 package:
   name: torchplus
-  version: 0.0.7
+  version: 0.0.8
 
 source:
   path: ./
 
 build:
   noarch: python
-  number: 3
+  number: 0
 
 requirements:
   host:
@@ -19,6 +19,7 @@ requirements:
     - numpy
     - pytorch
     - torchvision
+    - tensorboard
 about:
   summary: Torchplus is a utilities library that extends pytorch and torchvision
   home: https://github.com/zhangzp9970/torchplus
