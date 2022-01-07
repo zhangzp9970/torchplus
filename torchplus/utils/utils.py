@@ -6,7 +6,7 @@ import pandas as pd
 
 def class_split(dataset: Dataset, start: int, end: int, step: Optional[int] = 1) -> Subset:
     assert step > 0, 'step should be greater than 0'
-    assert step < (end-start), 'length should be greater than step'
+    assert step <= (end-start), 'length should be greater than step'
     ds_len = len(dataset)
     classes = torch.arange(start, end, step)
     indices = list(range(ds_len))
