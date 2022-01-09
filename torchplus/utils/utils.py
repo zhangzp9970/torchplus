@@ -22,7 +22,7 @@ def save_excel(tensor: torch.Tensor, fp: str) -> None:
         if tensor.dim() == 3:
             for i in range(tensor.shape[0]):
                 t = tensor[i]
-                data = t.detach().numpy()
+                data = t.detach().cpu().numpy()
                 df = pd.DataFrame(data)
                 df.to_excel(Ewriter, sheet_name=str(i),
                             index=False, header=False)
@@ -31,6 +31,6 @@ def save_excel(tensor: torch.Tensor, fp: str) -> None:
         else:
             if tensor.dim() == 0:
                 tensor = tensor.reshape(1)
-            data = tensor.detach().numpy()
+            data = tensor.detach().cpu().numpy()
             df = pd.DataFrame(data)
             df.to_excel(Ewriter, sheet_name=str(0), index=False, header=False)
