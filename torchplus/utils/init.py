@@ -63,4 +63,4 @@ class Init():
             raise RuntimeError('tensorboard summary writer not set!')
 
     def get_workers(self)->int:
-        return cpu_count() if os.name == "posix" else 0
+        return cpu_count()
