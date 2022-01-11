@@ -46,7 +46,7 @@ class Init():
         if self.log_root_dir is not None:
             current_time = datetime.datetime.now().strftime('%b%d_%H-%M-%S')
             self.log_dir = os.path.join(
-                self.log_root_dir, current_time + '_' + socket.gethostname() + self.comment)
+                self.log_root_dir, current_time + '_' + socket.gethostname() + '_' + self.comment)
             os.makedirs(self.log_dir, exist_ok=True)
 
     def __set_tensorboard(self):
