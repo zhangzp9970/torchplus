@@ -2,6 +2,8 @@ import torch
 from torch.utils.data import Dataset, Subset
 from typing import Optional
 import pandas as pd
+from PIL import Image
+from torchvision.transforms.functional import to_tensor
 
 
 def class_split(dataset: Dataset, start: int, end: int, step: Optional[int] = 1) -> Subset:
@@ -17,8 +19,8 @@ def class_split(dataset: Dataset, start: int, end: int, step: Optional[int] = 1)
     return Subset(dataset, selected_indices)
 
 
-def save_excel(tensor: torch.Tensor, fp: str) -> None:
-    with pd.ExcelWriter(fp) as Ewriter:
+def save_excel(tensor: torch.Tensor, path: str) -> None:
+    with pd.ExcelWriter(path) as Ewriter:
         if tensor.dim() == 3:
             for i in range(tensor.shape[0]):
                 t = tensor[i]
@@ -34,3 +36,9 @@ def save_excel(tensor: torch.Tensor, fp: str) -> None:
             data = tensor.detach().cpu().numpy()
             df = pd.DataFrame(data)
             df.to_excel(Ewriter, sheet_name=str(0), index=False, header=False)
+
+
+def read_image_to_tensor(path: str) -> torch.Tensor:
+    img = Image.open(path)
+    im = to_tensor(img)
+    return im
