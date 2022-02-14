@@ -12,8 +12,13 @@ class BaseAccuracy():
 
     def accumulate(self, label: torch.Tensor, value: torch.Tensor) -> None:
         assert label.shape == value.shape
+        assert label.device==value.device
+        output_device = label.device
+        self.count_pool = self.count_pool.to(label.device)
+        self.value_pool = self.value_pool.to(output_device)
+        self.accuracy_pool = self.accuracy_pool.to(output_device)
         for i in range(len(label)):
-            self.count_pool[label[i]] += torch.tensor(1.0)
+            self.count_pool[label[i]] += torch.tensor(1.0).to(output_device)
             self.value_pool[label[i]] += value[label[i]]
 
         for i in range(len(self.count_pool)):

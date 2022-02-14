@@ -3,7 +3,7 @@ from torch.utils.data import Dataset, Subset
 from typing import Optional
 import pandas as pd
 from PIL import Image
-from torchvision.transforms.functional import to_tensor
+from torchvision.transforms.functional import to_tensor, to_grayscale
 
 
 def class_split(dataset: Dataset, start: int, end: int, step: Optional[int] = 1) -> Subset:
@@ -38,7 +38,9 @@ def save_excel(tensor: torch.Tensor, path: str) -> None:
             df.to_excel(Ewriter, sheet_name=str(0), index=False, header=False)
 
 
-def read_image_to_tensor(path: str) -> torch.Tensor:
+def read_image_to_tensor(path: str, grayscale: bool = False) -> torch.Tensor:
     img = Image.open(path)
+    if grayscale:
+        img = to_grayscale(img, num_output_channels=1)
     im = to_tensor(img)
     return im
