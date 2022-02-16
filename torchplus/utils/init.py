@@ -14,12 +14,13 @@ from torch.profiler import *
 
 
 class Init():
-    def __init__(self, seed: int, log_root_dir: Optional[str] = None, backup_filename: Optional[str] = None, tensorboard: Optional[bool] = False, comment: Optional[str] = '', profiler: Optional[bool] = False, **kwargs) -> None:
+    def __init__(self, seed: int, log_root_dir: Optional[str] = None, backup_filename: Optional[str] = None, tensorboard: Optional[bool] = False, comment: Optional[str] = '', deterministic: Optional[bool] = False, profiler: Optional[bool] = False, **kwargs) -> None:
         self.seed = seed
         self.log_root_dir = log_root_dir
         self.backup_filename = backup_filename
         self.tensorboard = tensorboard
         self.comment = comment
+        self.deterministic = deterministic
         self.profiler = profiler
         self.kwargs = kwargs
         self.__print_comment()
@@ -34,13 +35,15 @@ class Init():
             print(self.comment)
 
     def __set_seed(self) -> None:
-        cudnn.benchmark = True
-        cudnn.deterministic = True
         random.seed(self.seed)
         torch.manual_seed(self.seed)
         torch.cuda.manual_seed_all(self.seed)
         np.random.seed(self.seed)
         os.environ['PYTHONHASHSEED'] = str(self.seed)
+        if self.deterministic:
+            cudnn.benchmark = False
+            cudnn.deterministic = True
+            torch.use_deterministic_algorithms(True)
 
     def __set_log_dir(self) -> None:
         if self.log_root_dir is not None:
