@@ -9,7 +9,7 @@ build:
   script: python setup.py install --single-version-externally-managed --record=record.txt
   include_recipe: False
   noarch: python
-  number: 3
+  number: 4
 
 requirements:
   host:

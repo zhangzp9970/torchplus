@@ -19,7 +19,7 @@ class BaseAccuracy():
         self.accuracy_pool = self.accuracy_pool.to(output_device)
         for i in range(len(label)):
             self.count_pool[label[i]] += torch.tensor(1.0).to(output_device)
-            self.value_pool[label[i]] += value[label[i]]
+            self.value_pool[label[i]] += value[i]
 
         for i in range(len(self.count_pool)):
             self.accuracy_pool[i] = self.value_pool[i]/self.count_pool[i]
