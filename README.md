@@ -1,3 +1,5 @@
+![torchplus](./doc/images/torchplus.svg)
+
 # torchplus
 
 torchplus is a utilities library that extends pytorch and torchvision
@@ -33,11 +35,11 @@ torchplus is a utilities library that extends pytorch and torchvision
 
 ## Acknowledgements
 
-Inspired by [easydl](https://github.com/thuml/easydl) project from Tsinghua University
+Inspired by [easydl](https://pypi.org/project/easydl/) project from Tsinghua University
 
 ## License
 
-Copyright © 2021 Zeping Zhang
+Copyright © 2021-2022 Zeping Zhang
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
