@@ -14,7 +14,7 @@ def class_split(dataset: Dataset, start: int, end: int, step: Optional[int] = 1)
     indices = list(range(ds_len))
     selected_indices = []
     for i in indices:
-        if dataset.targets[i] in classes:
+        if dataset[i][1] in classes:
             selected_indices.append(indices[i])
     return Subset(dataset, selected_indices)
 
