@@ -2,7 +2,7 @@ import socket
 import datetime
 import os
 import random
-from typing import Optional
+from typing import List, Optional, TypeVar
 import warnings
 
 import numpy as np
@@ -12,11 +12,14 @@ from torch.utils.tensorboard import SummaryWriter
 from multiprocessing import cpu_count
 from torch.profiler import *
 
+D_torchplus = TypeVar('D_torchplus', str, List[str])
 
-class Init():
-    def __init__(self, seed: int, log_root_dir: Optional[str] = None, backup_filename: Optional[str] = None, tensorboard: Optional[bool] = False, comment: Optional[str] = '', deterministic: Optional[bool] = False, profiler: Optional[bool] = False, **kwargs) -> None:
+
+class Init(object):
+    def __init__(self, seed: int, log_root_dir: Optional[str] = None, split: Optional[bool] = False, backup_filename: Optional[str] = None, tensorboard: Optional[bool] = False, comment: Optional[str] = '', deterministic: Optional[bool] = False, profiler: Optional[bool] = False, **kwargs) -> None:
         self.seed = seed
         self.log_root_dir = log_root_dir
+        self.split = split
         self.backup_filename = backup_filename
         self.tensorboard = tensorboard
         self.comment = comment
@@ -25,7 +28,7 @@ class Init():
         self.kwargs = kwargs
         self.__print_comment()
         self.__set_seed()
-        self.__set_log_dir()
+        self.__set_dir()
         self.__set_tensorboard()
         self.__set_backup_file()
         self.__set_profiler()
@@ -45,12 +48,21 @@ class Init():
             cudnn.deterministic = True
             torch.use_deterministic_algorithms(True)
 
-    def __set_log_dir(self) -> None:
+    def __set_dir(self) -> None:
         if self.log_root_dir is not None:
             current_time = datetime.datetime.now().strftime('%b%d_%H-%M-%S')
-            self.log_dir = os.path.join(
-                self.log_root_dir, current_time + '_' + socket.gethostname() + '_' + self.comment)
-            os.makedirs(self.log_dir, exist_ok=True)
+            suffix = current_time + '_' + socket.gethostname() + '_' + self.comment
+            if self.split:
+                self.model_dir = os.path.join(
+                    self.log_root_dir, 'Model_'+suffix)
+                self.log_dir = os.path.join(
+                    self.log_root_dir, 'Log_'+suffix)
+                os.makedirs(self.model_dir, exist_ok=True)
+                os.makedirs(self.log_dir, exist_ok=True)
+            else:
+                self.log_dir = os.path.join(
+                    self.log_root_dir, suffix)
+                os.makedirs(self.log_dir, exist_ok=True)
 
     def __set_tensorboard(self):
         if self.tensorboard is True:
@@ -118,9 +130,9 @@ class Init():
     def get_device(self) -> torch.device:
         return torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    def get_log_dir(self) -> str:
+    def get_log_dir(self) -> D_torchplus:
         try:
-            return self.log_dir
+            return [self.log_dir, self.model_dir] if self.split else self.log_dir
         except AttributeError:
             raise RuntimeError('log directory not set!')
 

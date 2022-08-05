@@ -4,7 +4,7 @@ import torch.nn.functional as F
 
 T_torchplus=TypeVar('T_torchplus',torch.Tensor,Dict)
 
-class BaseAccuracy():
+class BaseAccuracy(object):
     def __init__(self, class_number: int) -> None:
         self.count_pool = torch.zeros(class_number)
         self.value_pool = torch.zeros(class_number)
