@@ -6,7 +6,7 @@ parent_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(parent_dir)
 
 setup(name='torchplus',
-      version='0.1.0',
+      version='0.1.1',
       author='Zeping Zhang',
       license='GPL-v3',
       author_email='zhangzp9970@outlook.com',

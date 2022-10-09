@@ -4,6 +4,7 @@ import os
 import random
 from typing import List, Optional, TypeVar
 import warnings
+import argparse
 
 import numpy as np
 import torch
@@ -16,6 +17,24 @@ D_torchplus = TypeVar('D_torchplus', str, List[str])
 
 
 class Init(object):
+    seed = None
+    log_root_dir = None
+    split = None
+    backup_filename = None
+    tensorboard = None
+    comment = None
+    deterministic = None
+    profiler = None
+    kwargs = None
+    schedule_wait = None
+    schedule_warmup = None
+    schedule_active = None
+    schedule_repeat = None
+    trace_handler = None
+    record_shapes = None
+    with_stack = None
+    profile_memory = None
+
     def __init__(self, seed: int, log_root_dir: Optional[str] = None, split: Optional[bool] = False, backup_filename: Optional[str] = None, tensorboard: Optional[bool] = False, comment: Optional[str] = '', deterministic: Optional[bool] = False, profiler: Optional[bool] = False, **kwargs) -> None:
         self.seed = seed
         self.log_root_dir = log_root_dir
@@ -26,12 +45,36 @@ class Init(object):
         self.deterministic = deterministic
         self.profiler = profiler
         self.kwargs = kwargs
+        self.__parse_args()
         self.__print_comment()
         self.__set_seed()
         self.__set_dir()
         self.__set_tensorboard()
         self.__set_backup_file()
+        self.__set_argumentparser()
         self.__set_profiler()
+
+    def __parse_args(self):
+        for arg in self.kwargs:
+            if arg == 'schedule_wait':
+                self.schedule_wait = self.kwargs['schedule_wait']
+            elif arg == 'schedule_warmup':
+                self.schedule_warmup = self.kwargs['schedule_warmup']
+            elif arg == 'schedule_active':
+                self.schedule_active = self.kwargs['schedule_active']
+            elif arg == 'schedule_repeat':
+                self.schedule_repeat = self.kwargs['schedule_repeat']
+            elif arg == 'trace_handler':
+                self.trace_handler = self.kwargs['trace_handler']
+            elif arg == 'record_shapes':
+                self.record_shapes = self.kwargs['record_shapes']
+            elif arg == 'with_stack':
+                self.with_stack = self.kwargs['with_stack']
+            elif arg == 'profile_memory':
+                self.profile_memory = self.kwargs['profile_memory']
+            else:
+                warnings.warn('Unexpected arguments: '+arg)
+        pass
 
     def __print_comment(self):
         if self.comment != '':
@@ -64,7 +107,7 @@ class Init(object):
                     self.log_root_dir, suffix)
                 os.makedirs(self.log_dir, exist_ok=True)
 
-    def __set_tensorboard(self):
+    def __set_tensorboard(self) -> None:
         if self.tensorboard is True:
             try:
                 os.path.exists(self.log_dir)
@@ -85,45 +128,48 @@ class Init(object):
             except:
                 warnings.warn('Log directory is NONE, file not backuped!')
 
-    def __set_profiler(self):
+    def __set_argumentparser(self) -> None:
+        self.parser = argparse.ArgumentParser(description=self.comment)
+
+    def __set_profiler(self) -> None:
         if self.profiler is True:
-            self.schedule_wait = 100
-            self.schedule_warmup = 1
-            self.schedule_active = 3
-            self.schedule_repeat = 0
+            schedule_wait = 100
+            schedule_warmup = 1
+            schedule_active = 3
+            schedule_repeat = 0
             try:
                 os.path.exists(self.log_dir)
                 self.trace_handler = tensorboard_trace_handler(self.log_dir)
             except:
-                self.trace_handler = None
-            self.record_shapes = True
-            self.with_stack = True
-            self.profile_memory = True
-            if 'schedule_wait' in self.kwargs.keys():
-                self.schedule_wait = self.kwargs['schedule_wait']
-            if 'schedule_warmup' in self.kwargs.keys():
-                self.schedule_warmup = self.kwargs['schedule_warmup']
-            if 'schedule_active' in self.kwargs.keys():
-                self.schedule_active = self.kwargs['schedule_active']
-            if 'schedule_repeat' in self.kwargs.keys():
-                self.schedule_repeat = self.kwargs['schedule_repeat']
-            if 'trace_handler' in self.kwargs.keys():
-                self.trace_handler = self.kwargs['trace_handler']
-            if 'record_shapes' in self.kwargs.keys():
-                self.record_shapes = self.kwargs['record_shapes']
-            if "with_stack" in self.kwargs.keys():
-                self.with_stack = self.kwargs['with_stack']
-            if 'profile_memory' in self.kwargs.keys():
-                self.profile_memory = self.kwargs['profile_memory']
+                trace_handler = None
+            record_shapes = True
+            with_stack = True
+            profile_memory = True
+            if self.schedule_wait is not None:
+                schedule_wait = self.schedule_wait
+            if self.schedule_warmup is not None:
+                schedule_warmup = self.schedule_warmup
+            if self.schedule_active is not None:
+                schedule_active = self.schedule_active
+            if self.schedule_repeat is not None:
+                schedule_repeat = self.schedule_repeat
+            if self.trace_handler is not None:
+                trace_handler = self.trace_handler
+            if self.record_shapes is not None:
+                record_shapes = self.record_shapes
+            if self.with_stack is not None:
+                with_stack = self.with_stack
+            if self.profile_memory is not None:
+                profile_memory = self.profile_memory
             self.profile = profile(
-                schedule=schedule(wait=self.schedule_wait, warmup=self.schedule_warmup,
-                                  active=self.schedule_active, repeat=self.schedule_repeat),
-                on_trace_ready=self.trace_handler,
-                record_shapes=self.record_shapes,
-                with_stack=self.with_stack,
-                profile_memory=self.profile_memory)
+                schedule=schedule(wait=schedule_wait, warmup=schedule_warmup,
+                                  active=schedule_active, repeat=schedule_repeat),
+                on_trace_ready=trace_handler,
+                record_shapes=record_shapes,
+                with_stack=with_stack,
+                profile_memory=profile_memory)
         else:
-            if ('schedule_wait' in self.kwargs.keys()) or ('schedule_warmup' in self.kwargs.keys()) or ('schedule_active' in self.kwargs.keys()) or ('schedule_repeat' in self.kwargs.keys()) or ('trace_handler' in self.kwargs.keys()) or ('record_shapes' in self.kwargs.keys()) or ("with_stack" in self.kwargs.keys()) or ('profile_memory' in self.kwargs.keys()):
+            if (self.schedule_wait is not None) or (self.schedule_warmup is not None) or (self.schedule_active is not None) or (self.schedule_repeat is not None) or (self.trace_handler is not None) or (self.record_shapes is not None) or (self.with_stack is not None) or (self.profile_memory is not None):
                 warnings.warn(
                     'Pytorch profiler not set! Set profiler = True first!')
 
@@ -144,6 +190,9 @@ class Init(object):
 
     def get_workers(self) -> int:
         return cpu_count()
+    
+    def get_parser(self)->argparse.ArgumentParser:
+        return self.parser
 
     def get_profiler(self) -> profile:
         try:
