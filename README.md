@@ -39,7 +39,7 @@ Inspired by [easydl](https://pypi.org/project/easydl/) project from Tsinghua Uni
 
 ## License
 
-Copyright © 2021-2022 Zeping Zhang
+Copyright © 2021-2023 Zeping Zhang
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
