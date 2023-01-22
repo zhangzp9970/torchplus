@@ -1,16 +1,14 @@
-import socket
+from socket import gethostname
 import datetime
 import os
 import random
 from typing import List, Optional, TypeVar
 import warnings
-import argparse
 
 import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
 from torch.utils.tensorboard import SummaryWriter
-from multiprocessing import cpu_count
 from torch.profiler import *
 
 D_torchplus = TypeVar('D_torchplus', str, List[str])
@@ -19,7 +17,7 @@ D_torchplus = TypeVar('D_torchplus', str, List[str])
 class Init(object):
     seed = None
     log_root_dir = None
-    split = None
+    sep = None
     backup_filename = None
     tensorboard = None
     comment = None
@@ -35,10 +33,10 @@ class Init(object):
     with_stack = None
     profile_memory = None
 
-    def __init__(self, seed: int, log_root_dir: Optional[str] = None, split: Optional[bool] = False, backup_filename: Optional[str] = None, tensorboard: Optional[bool] = False, comment: Optional[str] = '', deterministic: Optional[bool] = False, profiler: Optional[bool] = False, **kwargs) -> None:
+    def __init__(self, seed: int, log_root_dir: Optional[str] = None, sep: Optional[bool] = False, backup_filename: Optional[str] = None, tensorboard: Optional[bool] = False, comment: Optional[str] = '', deterministic: Optional[bool] = False, profiler: Optional[bool] = False, **kwargs) -> None:
         self.seed = seed
         self.log_root_dir = log_root_dir
-        self.split = split
+        self.sep = sep
         self.backup_filename = backup_filename
         self.tensorboard = tensorboard
         self.comment = comment
@@ -51,7 +49,6 @@ class Init(object):
         self.__set_dir()
         self.__set_tensorboard()
         self.__set_backup_file()
-        self.__set_argumentparser()
         self.__set_profiler()
 
     def __parse_args(self):
@@ -94,8 +91,8 @@ class Init(object):
     def __set_dir(self) -> None:
         if self.log_root_dir is not None:
             current_time = datetime.datetime.now().strftime('%b%d_%H-%M-%S')
-            suffix = current_time + '_' + socket.gethostname() + '_' + self.comment
-            if self.split:
+            suffix = current_time + '_' + gethostname() + '_' + self.comment
+            if self.sep:
                 self.model_dir = os.path.join(
                     self.log_root_dir, 'Model_'+suffix)
                 self.log_dir = os.path.join(
@@ -127,9 +124,6 @@ class Init(object):
                         fout.write(file)
             except:
                 warnings.warn('Log directory is NONE, file not backuped!')
-
-    def __set_argumentparser(self) -> None:
-        self.parser = argparse.ArgumentParser(description=self.comment)
 
     def __set_profiler(self) -> None:
         if self.profiler is True:
@@ -187,12 +181,6 @@ class Init(object):
             return self.writer
         except AttributeError:
             raise RuntimeError('tensorboard summary writer not set!')
-
-    def get_workers(self) -> int:
-        return cpu_count()
-    
-    def get_parser(self)->argparse.ArgumentParser:
-        return self.parser
 
     def get_profiler(self) -> profile:
         try:
