@@ -172,7 +172,7 @@ class Init(object):
 
     def get_log_dir(self) -> D_torchplus:
         try:
-            return [self.log_dir, self.model_dir] if self.split else self.log_dir
+            return [self.log_dir, self.model_dir] if self.sep else self.log_dir
         except AttributeError:
             raise RuntimeError('log directory not set!')
 
