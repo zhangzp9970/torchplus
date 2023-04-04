@@ -1,9 +1,12 @@
 import torch
+import os
+import pathlib
 from torch.utils.data import Dataset, Subset
-from typing import Optional
+from typing import Any, BinaryIO, List, Optional, Tuple, Union
 import pandas as pd
 from PIL import Image
 from torchvision.transforms.functional import to_tensor, to_grayscale
+from torchvision.utils import save_image
 from base64 import b64encode
 
 
@@ -50,6 +53,17 @@ def save_csv(tensor: torch.Tensor, path: str, sep: Optional[str] = ',') -> None:
         df.to_csv(path, sep=sep, index=False, header=False)
 
 
+def save_image2(
+    tensor: Union[torch.Tensor, List[torch.Tensor]],
+        fp: Union[str, pathlib.Path, BinaryIO],
+        format: Optional[str] = None,
+        **kwargs,
+) -> None:
+    dir = os.path.dirname(fp)
+    os.makedirs(dir, exist_ok=True)
+    save_image(tensor, fp, format, **kwargs)
+
+
 def read_image_to_tensor(path: str, grayscale: bool = False) -> torch.Tensor:
     img = Image.open(path)
     if grayscale:
@@ -57,8 +71,10 @@ def read_image_to_tensor(path: str, grayscale: bool = False) -> torch.Tensor:
     im = to_tensor(img)
     return im
 
-def hash_code(obj:object)->str:
+
+def hash_code(obj: object) -> str:
     return b64encode(str(hash(obj)).encode()).decode()[0:7]
+
 
 def __guassian_kernel(source, target, kernel_mul=2.0, kernel_num=5, fix_sigma=None):
     n_samples = int(source.size()[0])+int(target.size()[0])
@@ -74,16 +90,16 @@ def __guassian_kernel(source, target, kernel_mul=2.0, kernel_num=5, fix_sigma=No
         bandwidth = torch.sum(L2_distance.data) / (n_samples**2-n_samples)
     bandwidth /= kernel_mul ** (kernel_num // 2)
     bandwidth_list = [bandwidth * (kernel_mul**i)
-                        for i in range(kernel_num)]
+                      for i in range(kernel_num)]
     kernel_val = [torch.exp(-L2_distance / bandwidth_temp)
-                    for bandwidth_temp in bandwidth_list]
+                  for bandwidth_temp in bandwidth_list]
     return sum(kernel_val)
 
 
 def MMD(source, target, kernel_mul=2.0, kernel_num=5, fix_sigma=None):
     batch_size = int(source.size()[0])
     kernels = __guassian_kernel(source, target,
-                              kernel_mul=kernel_mul, kernel_num=kernel_num, fix_sigma=fix_sigma)
+                                kernel_mul=kernel_mul, kernel_num=kernel_num, fix_sigma=fix_sigma)
     XX = kernels[:batch_size, :batch_size]
     YY = kernels[batch_size:, batch_size:]
     XY = kernels[:batch_size, batch_size:]

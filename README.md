@@ -16,6 +16,10 @@ torchplus is a utilities library that extends pytorch and torchvision
 * torchplus.datasets
   * KSDD -- [KolektorSDD](http://go.vicos.si/kolektorsdd) dataset loader, compatible with other torchvision APIs.
   * KSDD2 --[KolektorSDD2](http://go.vicos.si/kolektorsdd2) dataset loader, compatible with other torchvision APIs.
+* torchplus.distributed
+  * FederatedAverage -- Implements the federated average algorithm.
+* torchplus.math
+  * pi -- The pi=3.1415.
 * torchplus.nn
   * MSEWithWeightLoss -- Weighted mean square error function.
   * PixelLoss -- Calculates the differences of pixels in two batches of images.
@@ -24,12 +28,16 @@ torchplus is a utilities library that extends pytorch and torchvision
 * torchplus.transforms
   * Crop -- Packages the torchvision.transforms.functional.crop function into a class, make it compatible with other transforms in torchvision.transforms.transforms.
 * torchplus.utils
-  * Init -- Initialize all useful functions, make it easy to write code. Specifically, initialize all seeds, make log directory, initialize tensorboard, automatically backup the current file into the log directory, initialize pytorch profiler, initialize data workers using multiprocessing.cpu_count(). It can returns the log directory, the tensorboard writer object, the pytorch profilier object, the output device(CPU or CUDA), the data workers (for DataLoader)
+  * Init -- Initialize all useful functions, make it easy to write code. Specifically, initialize all seeds, make log directory, initialize tensorboard, automatically backup the current file into the log directory, initialize pytorch profiler. It can returns the log directory, the tensorboard writer object, the pytorch profilier object, the output device(CPU or CUDA), the data workers (for DataLoader)
   * BaseAccuracy -- Base class to calculate accuracy for the whole dataset or accuracies for each class.
   * ClassificationAccuracy -- Calculate classification accuracy for the classification task.
-  * class_split -- split the dataset into subdatasets based on the classes, like torch.utils.data.random_split(), which randomly split the datasets.
-  * save_excel -- save a tensor to excel spreadsheet, make it easy to analysis the data.
-  * read_image_to_tensor -- read a image into a tensor. Since the torchvision.io.read_image() can only read jpg and png images, which are not so useful in practice.
+  * class_split -- Split the dataset into subdatasets based on the classes, like torch.utils.data.random_split(), which randomly split the datasets.
+  * save_excel -- Save a tensor to excel spreadsheet, make it easy to analysis the data.
+  * save_csv -- Save a tensor to csv sheet.
+  * save_image2 -- Enhance the save_image function in torchvision by intelligent creating directories.
+  * read_image_to_tensor -- Read a image into a tensor. Since the torchvision.io.read_image() can only read jpg and png images, which are not so useful in practice.
+  * hash_code -- Return a hash code for a object, useful when you want to produce time-variant filenames without changing the code.
+  * MMD -- Calculate the Maximum Mean Discrepancy of two batches of tensors. Code from the internet.
 * continue developing...
 
 ## Acknowledgements
