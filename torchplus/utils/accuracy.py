@@ -2,7 +2,8 @@ from typing import Optional, Dict, TypeVar
 import torch
 import torch.nn.functional as F
 
-T_torchplus=TypeVar('T_torchplus',torch.Tensor,Dict)
+T_torchplus = TypeVar("T_torchplus", torch.Tensor, Dict)
+
 
 class BaseAccuracy(object):
     def __init__(self, class_number: int) -> None:
@@ -12,7 +13,7 @@ class BaseAccuracy(object):
 
     def accumulate(self, label: torch.Tensor, value: torch.Tensor) -> None:
         assert label.shape == value.shape
-        assert label.device==value.device
+        assert label.device == value.device
         output_device = label.device
         self.count_pool = self.count_pool.to(label.device)
         self.value_pool = self.value_pool.to(output_device)
@@ -22,9 +23,11 @@ class BaseAccuracy(object):
             self.value_pool[label[i]] += value[i]
 
         for i in range(len(self.count_pool)):
-            self.accuracy_pool[i] = self.value_pool[i]/self.count_pool[i]
+            self.accuracy_pool[i] = self.value_pool[i] / self.count_pool[i]
 
-    def get(self, per_class: Optional[bool] = False, isdict: Optional[bool] = False) -> T_torchplus:
+    def get(
+        self, per_class: Optional[bool] = False, isdict: Optional[bool] = False
+    ) -> T_torchplus:
         if per_class:
             if isdict:
                 accuracy_dict = dict()
@@ -34,7 +37,7 @@ class BaseAccuracy(object):
             else:
                 return self.accuracy_pool
         else:
-            return torch.sum(self.value_pool)/torch.sum(self.count_pool)
+            return torch.sum(self.value_pool) / torch.sum(self.count_pool)
 
 
 class ClassificationAccuracy(BaseAccuracy):
@@ -44,5 +47,5 @@ class ClassificationAccuracy(BaseAccuracy):
     def accumulate(self, label: torch.Tensor, predict: torch.Tensor) -> None:
         assert label.shape == predict.shape
         value = label == predict
-        value=value.to(torch.float)
+        value = value.to(torch.float)
         super().accumulate(label, value)

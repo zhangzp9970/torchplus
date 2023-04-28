@@ -1,3 +1,3 @@
 from .federated import FederatedAverage
 
-__all__ = ('FederatedAverage')
+__all__ = "FederatedAverage"

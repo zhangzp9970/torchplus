@@ -10,9 +10,11 @@ from torchvision.utils import save_image
 from base64 import b64encode
 
 
-def class_split(dataset: Dataset, start: int, end: int, step: Optional[int] = 1) -> Subset:
-    assert step > 0, 'step should be greater than 0'
-    assert step <= (end-start), 'length should be greater than step'
+def class_split(
+    dataset: Dataset, start: int, end: int, step: Optional[int] = 1
+) -> Subset:
+    assert step > 0, "step should be greater than 0"
+    assert step <= (end - start), "length should be greater than step"
     ds_len = len(dataset)
     classes = torch.arange(start, end, step)
     indices = list(range(ds_len))
@@ -30,8 +32,7 @@ def save_excel(tensor: torch.Tensor, path: str) -> None:
                 t = tensor[i]
                 data = t.detach().cpu().numpy()
                 df = pd.DataFrame(data)
-                df.to_excel(Ewriter, sheet_name=str(i),
-                            index=False, header=False)
+                df.to_excel(Ewriter, sheet_name=str(i), index=False, header=False)
         elif tensor.dim() >= 4:
             raise RuntimeError("tensor shape should be less than 3")
         else:
@@ -42,7 +43,7 @@ def save_excel(tensor: torch.Tensor, path: str) -> None:
             df.to_excel(Ewriter, sheet_name=str(0), index=False, header=False)
 
 
-def save_csv(tensor: torch.Tensor, path: str, sep: Optional[str] = ',') -> None:
+def save_csv(tensor: torch.Tensor, path: str, sep: Optional[str] = ",") -> None:
     if tensor.dim() >= 3:
         raise RuntimeError("tensor shape should be less than 2")
     else:
@@ -55,9 +56,9 @@ def save_csv(tensor: torch.Tensor, path: str, sep: Optional[str] = ',') -> None:
 
 def save_image2(
     tensor: Union[torch.Tensor, List[torch.Tensor]],
-        fp: Union[str, pathlib.Path, BinaryIO],
-        format: Optional[str] = None,
-        **kwargs,
+    fp: Union[str, pathlib.Path, BinaryIO],
+    format: Optional[str] = None,
+    **kwargs,
 ) -> None:
     dir = os.path.dirname(fp)
     os.makedirs(dir, exist_ok=True)
@@ -77,29 +78,36 @@ def hash_code(obj: object) -> str:
 
 
 def __guassian_kernel(source, target, kernel_mul=2.0, kernel_num=5, fix_sigma=None):
-    n_samples = int(source.size()[0])+int(target.size()[0])
+    n_samples = int(source.size()[0]) + int(target.size()[0])
     total = torch.cat([source, target], dim=0)
     total0 = total.unsqueeze(0).expand(
-        int(total.size(0)), int(total.size(0)), int(total.size(1)))
+        int(total.size(0)), int(total.size(0)), int(total.size(1))
+    )
     total1 = total.unsqueeze(1).expand(
-        int(total.size(0)), int(total.size(0)), int(total.size(1)))
-    L2_distance = ((total0-total1).pow(2)).sum(2)
+        int(total.size(0)), int(total.size(0)), int(total.size(1))
+    )
+    L2_distance = ((total0 - total1).pow(2)).sum(2)
     if fix_sigma:
         bandwidth = fix_sigma
     else:
-        bandwidth = torch.sum(L2_distance.data) / (n_samples**2-n_samples)
+        bandwidth = torch.sum(L2_distance.data) / (n_samples**2 - n_samples)
     bandwidth /= kernel_mul ** (kernel_num // 2)
-    bandwidth_list = [bandwidth * (kernel_mul**i)
-                      for i in range(kernel_num)]
-    kernel_val = [torch.exp(-L2_distance / bandwidth_temp)
-                  for bandwidth_temp in bandwidth_list]
+    bandwidth_list = [bandwidth * (kernel_mul**i) for i in range(kernel_num)]
+    kernel_val = [
+        torch.exp(-L2_distance / bandwidth_temp) for bandwidth_temp in bandwidth_list
+    ]
     return sum(kernel_val)
 
 
 def MMD(source, target, kernel_mul=2.0, kernel_num=5, fix_sigma=None):
     batch_size = int(source.size()[0])
-    kernels = __guassian_kernel(source, target,
-                                kernel_mul=kernel_mul, kernel_num=kernel_num, fix_sigma=fix_sigma)
+    kernels = __guassian_kernel(
+        source,
+        target,
+        kernel_mul=kernel_mul,
+        kernel_num=kernel_num,
+        fix_sigma=fix_sigma,
+    )
     XX = kernels[:batch_size, :batch_size]
     YY = kernels[batch_size:, batch_size:]
     XY = kernels[:batch_size, batch_size:]

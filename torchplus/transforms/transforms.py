@@ -15,4 +15,9 @@ class Crop(nn.Module):
         return crop(img, self.top, self.left, self.height, self.width)
 
     def __repr__(self):
-        return self.__class__.__name__ + '(top={0},left={1},height={2},width={3})'.format(self.top, self.left, self.height, self.width)
+        return (
+            self.__class__.__name__
+            + "(top={0},left={1},height={2},width={3})".format(
+                self.top, self.left, self.height, self.width
+            )
+        )

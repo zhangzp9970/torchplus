@@ -2,11 +2,13 @@ import os
 from typing import Any, Callable, Optional, Tuple
 
 from PIL import Image
-from torchvision.datasets.utils import (check_integrity,
-                                        download_and_extract_archive,
-                                        extract_archive)
+from torchvision.datasets.utils import (
+    check_integrity,
+    download_and_extract_archive,
+    extract_archive,
+)
 from torchvision.datasets.vision import VisionDataset
-from torchvision.transforms.transforms import (Compose, Resize, ToTensor)
+from torchvision.transforms.transforms import Compose, Resize, ToTensor
 
 
 class KSDD2(VisionDataset):
@@ -18,15 +20,19 @@ class KSDD2(VisionDataset):
     Y = []
     PoN = []
 
-    basic_transform = Compose(
-        [
-            Resize((640, 232))
-        ]
-    )
+    basic_transform = Compose([Resize((640, 232))])
 
-    def __init__(self, root: str, train: bool = True, transform: Optional[Callable] = None, target_transform: Optional[Callable] = None, download: bool = False) -> None:
-        super(KSDD2, self).__init__(root=root, transform=transform,
-                                    target_transform=target_transform)
+    def __init__(
+        self,
+        root: str,
+        train: bool = True,
+        transform: Optional[Callable] = None,
+        target_transform: Optional[Callable] = None,
+        download: bool = False,
+    ) -> None:
+        super(KSDD2, self).__init__(
+            root=root, transform=transform, target_transform=target_transform
+        )
         self.root = root
         self.train = train
         self.transform = transform
@@ -35,34 +41,53 @@ class KSDD2(VisionDataset):
         if self.download:
             self.__download()
         if not self.__check_integrity():
-            raise RuntimeError('Dataset not found or corrupted.' +
-                               ' You can use download=True to download it')
+            raise RuntimeError(
+                "Dataset not found or corrupted."
+                + " You can use download=True to download it"
+            )
         if not os.path.exists(os.path.join(self.root, self.base_folder)):
-            print('Target directory not found')
-            print("Extracting {} to {}".format(
-                os.path.join(self.root, self.file_name), os.path.join(self.root, self.base_folder)))
-            extract_archive(os.path.join(self.root, self.file_name),
-                            os.path.join(self.root, self.base_folder))
-        if os.path.exists(os.path.join(
-                self.root, self.base_folder, 'train', '10301 (copy).png')):
-            os.remove(os.path.join(
-                self.root, self.base_folder, 'train', '10301 (copy).png'))
-        if os.path.exists(os.path.join(
-                self.root, self.base_folder, 'train', '10301_GT (copy).png')):
-            os.remove(os.path.join(
-                self.root, self.base_folder, 'train', '10301_GT (copy).png'))
+            print("Target directory not found")
+            print(
+                "Extracting {} to {}".format(
+                    os.path.join(self.root, self.file_name),
+                    os.path.join(self.root, self.base_folder),
+                )
+            )
+            extract_archive(
+                os.path.join(self.root, self.file_name),
+                os.path.join(self.root, self.base_folder),
+            )
+        if os.path.exists(
+            os.path.join(self.root, self.base_folder, "train", "10301 (copy).png")
+        ):
+            os.remove(
+                os.path.join(self.root, self.base_folder, "train", "10301 (copy).png")
+            )
+        if os.path.exists(
+            os.path.join(self.root, self.base_folder, "train", "10301_GT (copy).png")
+        ):
+            os.remove(
+                os.path.join(
+                    self.root, self.base_folder, "train", "10301_GT (copy).png"
+                )
+            )
         if self.train:
-            self.__make_item_lists('train')
+            self.__make_item_lists("train")
         else:
-            self.__make_item_lists('test')
+            self.__make_item_lists("test")
         self.__make_pon_lists()
 
     def __download(self) -> None:
         if self.__check_integrity():
-            print('Files already downloaded and verified')
+            print("Files already downloaded and verified")
             return
         download_and_extract_archive(
-            self.url, self.root, extract_root=os.path.join(self.root, self.base_folder), filename=self.file_name, md5=self.zip_md5)
+            self.url,
+            self.root,
+            extract_root=os.path.join(self.root, self.base_folder),
+            filename=self.file_name,
+            md5=self.zip_md5,
+        )
 
     def __check_integrity(self) -> bool:
         file_path = os.path.join(self.root, self.file_name)
@@ -71,12 +96,14 @@ class KSDD2(VisionDataset):
         return True
 
     def __make_item_lists(self, folder_name: str) -> None:
-        file_list = os.listdir(os.path.join(
-            self.root, self.base_folder, folder_name))
+        file_list = os.listdir(os.path.join(self.root, self.base_folder, folder_name))
         file_list.sort()
         for i, file in enumerate(file_list):
-            self.X.append(os.path.join(self.root, self.base_folder, folder_name, file)) if i % 2 == 0 else self.Y.append(
-                os.path.join(self.root, self.base_folder, folder_name, file))
+            self.X.append(
+                os.path.join(self.root, self.base_folder, folder_name, file)
+            ) if i % 2 == 0 else self.Y.append(
+                os.path.join(self.root, self.base_folder, folder_name, file)
+            )
 
     def __make_pon_lists(self) -> None:
         for y in self.Y:

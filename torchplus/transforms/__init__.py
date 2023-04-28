@@ -1,3 +1,3 @@
 from .transforms import Crop
 
-__all__ = ('Crop')
+__all__ = "Crop"

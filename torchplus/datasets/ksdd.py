@@ -2,12 +2,13 @@ import os
 from typing import Any, Callable, Optional, Tuple
 
 from PIL import Image
-from torchvision.datasets.utils import (check_integrity,
-                                        download_and_extract_archive,
-                                        extract_archive)
+from torchvision.datasets.utils import (
+    check_integrity,
+    download_and_extract_archive,
+    extract_archive,
+)
 from torchvision.datasets.vision import VisionDataset
-from torchvision.transforms.transforms import (Compose, Grayscale, Resize,
-                                               ToTensor)
+from torchvision.transforms.transforms import Compose, Grayscale, Resize, ToTensor
 
 
 class KSDD(VisionDataset):
@@ -30,16 +31,21 @@ class KSDD(VisionDataset):
     Y = []
     PoN = []
 
-    basic_transform = Compose(
-        [
-            Grayscale(num_output_channels=1),
-            Resize((1408, 512))
-        ]
-    )
+    basic_transform = Compose([Grayscale(num_output_channels=1), Resize((1408, 512))])
 
-    def __init__(self, root: str, train: bool = True, fold: Optional[int] = 3, transform: Optional[Callable] = None, target_transform: Optional[Callable] = None, download: bool = False, box: Optional[bool] = False) -> None:
-        super(KSDD, self).__init__(root=root, transform=transform,
-                                   target_transform=target_transform)
+    def __init__(
+        self,
+        root: str,
+        train: bool = True,
+        fold: Optional[int] = 3,
+        transform: Optional[Callable] = None,
+        target_transform: Optional[Callable] = None,
+        download: bool = False,
+        box: Optional[bool] = False,
+    ) -> None:
+        super(KSDD, self).__init__(
+            root=root, transform=transform, target_transform=target_transform
+        )
         self.root = root
         self.train = train
         self.fold = fold
@@ -61,16 +67,25 @@ class KSDD(VisionDataset):
             self.__download()
 
         if not self.__check_integrity():
-            raise RuntimeError('Dataset not found or corrupted.' +
-                               ' You can use download=True to download it')
+            raise RuntimeError(
+                "Dataset not found or corrupted."
+                + " You can use download=True to download it"
+            )
         if not os.path.exists(os.path.join(self.root, self.base_folder)):
-            print('Target directory not found')
-            print("Extracting {} to {}".format(
-                os.path.join(self.root, self.file_name), os.path.join(self.root, self.base_folder)))
-            extract_archive(os.path.join(self.root, self.file_name),
-                            os.path.join(self.root, self.base_folder))
-        self.__make_dir_lists(root=os.path.join(
-            self.root, self.base_folder), fold=self.fold)
+            print("Target directory not found")
+            print(
+                "Extracting {} to {}".format(
+                    os.path.join(self.root, self.file_name),
+                    os.path.join(self.root, self.base_folder),
+                )
+            )
+            extract_archive(
+                os.path.join(self.root, self.file_name),
+                os.path.join(self.root, self.base_folder),
+            )
+        self.__make_dir_lists(
+            root=os.path.join(self.root, self.base_folder), fold=self.fold
+        )
         if self.train:
             self.dir_list = self.train_dir_list
         else:
@@ -82,22 +97,26 @@ class KSDD(VisionDataset):
         total_dir_list = os.listdir(root)
         total_dir_list.sort()
         total_dir_list_len = len(total_dir_list)
-        train_dir_list_len = int(total_dir_list_len*(1.0-1.0/float(fold)))
-        test_dir_list_len = total_dir_list_len-train_dir_list_len
+        train_dir_list_len = int(total_dir_list_len * (1.0 - 1.0 / float(fold)))
+        test_dir_list_len = total_dir_list_len - train_dir_list_len
         for i in range(train_dir_list_len):
             self.train_dir_list.append(total_dir_list[i])
         for i in range(test_dir_list_len):
-            i = i+train_dir_list_len
+            i = i + train_dir_list_len
             self.test_dir_list.append(total_dir_list[i])
 
     def __make_item_lists(self, dir_list: list) -> None:
         for folder_name in dir_list:
-            file_list = os.listdir(os.path.join(
-                self.root, self.base_folder, folder_name))
+            file_list = os.listdir(
+                os.path.join(self.root, self.base_folder, folder_name)
+            )
             file_list.sort()
             for i, file in enumerate(file_list):
-                self.X.append(os.path.join(self.root, self.base_folder, folder_name, file)) if i % 2 == 0 else self.Y.append(
-                    os.path.join(self.root, self.base_folder, folder_name, file))
+                self.X.append(
+                    os.path.join(self.root, self.base_folder, folder_name, file)
+                ) if i % 2 == 0 else self.Y.append(
+                    os.path.join(self.root, self.base_folder, folder_name, file)
+                )
 
     def __make_pon_lists(self) -> None:
         for y in self.Y:
@@ -121,10 +140,15 @@ class KSDD(VisionDataset):
 
     def __download(self) -> None:
         if self.__check_integrity():
-            print('Files already downloaded and verified')
+            print("Files already downloaded and verified")
             return
         download_and_extract_archive(
-            self.url, self.root, extract_root=os.path.join(self.root, self.base_folder), filename=self.file_name, md5=self.zip_md5)
+            self.url,
+            self.root,
+            extract_root=os.path.join(self.root, self.base_folder),
+            filename=self.file_name,
+            md5=self.zip_md5,
+        )
 
     def __check_integrity(self) -> bool:
         file_path = os.path.join(self.root, self.file_name)
