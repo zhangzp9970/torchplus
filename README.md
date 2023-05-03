@@ -16,8 +16,11 @@ torchplus is a utilities library that extends pytorch and torchvision
 * torchplus.datasets
   * KSDD -- [KolektorSDD](http://go.vicos.si/kolektorsdd) dataset loader, compatible with other torchvision APIs.
   * KSDD2 --[KolektorSDD2](http://go.vicos.si/kolektorsdd2) dataset loader, compatible with other torchvision APIs.
+  * FlatFolder -- A dataset class to handle flat folders with no sub directories, such as CelebA and FFHQ.
 * torchplus.distributed
   * FederatedAverage -- Implements the federated average algorithm.
+* torchplus.models
+  * ResNetFE and resnet*fe feature extractor of the Deep Residual Network (ResNet), with optional pretrained weights can be loaded.
 * torchplus.math
   * pi -- The pi=3.1415.
 * torchplus.nn
@@ -28,7 +31,7 @@ torchplus is a utilities library that extends pytorch and torchvision
 * torchplus.transforms
   * Crop -- Packages the torchvision.transforms.functional.crop function into a class, make it compatible with other transforms in torchvision.transforms.transforms.
 * torchplus.utils
-  * Init -- Initialize all useful functions, make it easy to write code. Specifically, initialize all seeds, make log directory, initialize tensorboard, automatically backup the current file into the log directory, initialize pytorch profiler. It can returns the log directory, the tensorboard writer object, the pytorch profilier object, the output device(CPU or CUDA), the data workers (for DataLoader)
+  * Init -- Initialize all useful functions, make it easy to write code. Specifically, initialize all seeds, make log directory, initialize tensorboard, automatically backup the current file into the log directory, initialize pytorch profiler. It can returns the log directory, the tensorboard writer object, the pytorch profilier object, the output device(CPU or CUDA).
   * BaseAccuracy -- Base class to calculate accuracy for the whole dataset or accuracies for each class.
   * ClassificationAccuracy -- Calculate classification accuracy for the classification task.
   * class_split -- Split the dataset into subdatasets based on the classes, like torch.utils.data.random_split(), which randomly split the datasets.
