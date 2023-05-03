@@ -78,3 +78,10 @@ def resnet152fe(
 ) -> ResNetFE:
     resnetmodel = resnet152(weights, progress)
     return ResNetFE(resnetmodel)
+
+
+ResNet18FE_Dim = 512
+ResNet34FE_Dim = 512
+ResNet50FE_Dim = 2048
+ResNet101FE_Dim = 2048
+ResNet152FE_Dim = 2048

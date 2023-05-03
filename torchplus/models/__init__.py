@@ -5,6 +5,11 @@ from .resnet import (
     resnet50fe,
     resnet101fe,
     resnet152fe,
+    ResNet18FE_Dim,
+    ResNet34FE_Dim,
+    ResNet50FE_Dim,
+    ResNet101FE_Dim,
+    ResNet152FE_Dim,
 )
 
 __all__ = (
@@ -14,4 +19,9 @@ __all__ = (
     "resnet50fe",
     "resnet101fe",
     "resnet152fe",
+    "ResNet18FE_Dim",
+    "ResNet34FE_Dim",
+    "ResNet50FE_Dim",
+    "ResNet101FE_Dim",
+    "ResNet152FE_Dim",
 )
