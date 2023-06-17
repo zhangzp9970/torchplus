@@ -11,6 +11,14 @@ torchplus is a utilities library that extends pytorch and torchvision
 [![Anaconda-Server Badge](https://anaconda.org/zhangzp9970/torchplus/badges/license.svg)](https://anaconda.org/zhangzp9970/torchplus)
 [![Anaconda-Server Badge](https://anaconda.org/zhangzp9970/torchplus/badges/downloads.svg)](https://anaconda.org/zhangzp9970/torchplus)
 
+## Install
+
+Install [Anaconda](https://www.anaconda.com/)
+
+Install Pytorch using the commands from the [official pytorch page](https://pytorch.org/)
+
+Install torchplus using `conda install torchplus -c zhangzp9970`
+
 ## Features
 
 * torchplus.datasets
