@@ -26,6 +26,8 @@ def class_split(
 
 
 def save_excel(tensor: torch.Tensor, path: str) -> None:
+    dir = os.path.dirname(path)
+    os.makedirs(dir, exist_ok=True)
     with pd.ExcelWriter(path) as Ewriter:
         if tensor.dim() == 3:
             for i in range(tensor.shape[0]):
@@ -44,6 +46,8 @@ def save_excel(tensor: torch.Tensor, path: str) -> None:
 
 
 def save_csv(tensor: torch.Tensor, path: str, sep: Optional[str] = ",") -> None:
+    dir = os.path.dirname(path)
+    os.makedirs(dir, exist_ok=True)
     if tensor.dim() >= 3:
         raise RuntimeError("tensor shape should be less than 2")
     else:

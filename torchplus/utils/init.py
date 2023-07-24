@@ -94,10 +94,16 @@ class Init(object):
         torch.cuda.manual_seed_all(self.seed)
         np.random.seed(self.seed)
         os.environ["PYTHONHASHSEED"] = str(self.seed)
+        torch.backends.cuda.matmul.allow_tf32 = True
+        torch.backends.cudnn.allow_tf32 = True
         if self.deterministic:
             cudnn.benchmark = False
             cudnn.deterministic = True
             torch.use_deterministic_algorithms(True)
+        else:
+            cudnn.benchmark = True
+            cudnn.deterministic = False
+            torch.use_deterministic_algorithms(False)
 
     def __set_dir(self) -> None:
         if self.log_root_dir is not None:

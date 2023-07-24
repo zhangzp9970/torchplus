@@ -1,6 +1,6 @@
 package:
   name: torchplus
-  version: 0.1.4
+  version: 0.1.5
 
 source:
   path: ./
@@ -9,7 +9,7 @@ build:
   script: python setup.py install --single-version-externally-managed --record=record.txt
   include_recipe: False
   noarch: python
-  number: 3
+  number: 0
 
 requirements:
   host:

@@ -13,11 +13,13 @@ torchplus is a utilities library that extends pytorch and torchvision
 
 ## Install
 
-Install [Anaconda](https://www.anaconda.com/)
+Install [Anaconda](https://www.anaconda.com/) or [Python](https://www.python.org/)
 
 Install Pytorch using the commands from the [official pytorch page](https://pytorch.org/)
 
-Install torchplus using `conda install torchplus -c zhangzp9970`
+Install torchplus using conda (recommended) `conda install torchplus -c zhangzp9970`
+
+or using pypi `pip install tplus`
 
 ## Features
 
@@ -34,6 +36,7 @@ Install torchplus using `conda install torchplus -c zhangzp9970`
 * torchplus.nn
   * MSEWithWeightLoss -- Weighted mean square error function.
   * PixelLoss -- Calculates the differences of pixels in two batches of images.
+  * PowerAmplification -- The amplification function proposed in paper "Analysis and Utilization of Hidden Information in Model Inversion Attacks"
 * torchplus.nn.functional
   * Functional implenmentation of MSEWithWeightLoss and PixelLoss, just like torch.nn.functional.
 * torchplus.transforms
