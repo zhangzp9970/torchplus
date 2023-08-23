@@ -15,7 +15,7 @@ class FlatFolder(VisionDataset):
         self.filename = os.listdir(root)
 
     def __getitem__(self, index: int) -> Any:
-        X = Image.open(os.path.join(self.root, self.filename[index]))
+        X = Image.open(os.path.join(self.root, self.filename[index])).convert("RGB")
         if self.transform is not None:
             X = self.transform(X)
         return X
