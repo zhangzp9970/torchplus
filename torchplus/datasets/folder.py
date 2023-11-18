@@ -32,13 +32,15 @@ def PreProcessFolder(
     transform: Optional[Callable] = None,
     target_transform: Optional[Callable] = None,
     loader: Callable[[str], Any] = ImageFolder,
+    batch_size=128,
+    num_workers=2,
 ):
     ds = loader(root=root, transform=transform, target_transform=target_transform)
     train_dl = DataLoader(
         dataset=ds,
-        batch_size=128,
+        batch_size=batch_size,
         shuffle=False,
-        num_workers=2,
+        num_workers=num_workers,
         drop_last=False,
     )
     if loader == ImageFolder:

@@ -27,6 +27,7 @@ or using pypi `pip install tplus`
   * KSDD -- [KolektorSDD](http://go.vicos.si/kolektorsdd) dataset loader, compatible with other torchvision APIs.
   * KSDD2 --[KolektorSDD2](http://go.vicos.si/kolektorsdd2) dataset loader, compatible with other torchvision APIs.
   * FlatFolder -- A dataset class to handle flat folders with no sub directories, such as CelebA and FFHQ.
+  * PreProcessFolder -- Preload the image data from disk into system memory to accelerate training.
 * torchplus.distributed
   * FederatedAverage -- Implements the federated average algorithm.
 * torchplus.models
@@ -36,7 +37,7 @@ or using pypi `pip install tplus`
 * torchplus.nn
   * MSEWithWeightLoss -- Weighted mean square error function.
   * PixelLoss -- Calculates the differences of pixels in two batches of images.
-  * PowerAmplification -- The amplification function proposed in paper "Analysis and Utilization of Hidden Information in Model Inversion Attacks"
+  * PowerAmplification -- The amplification function proposed in paper "[Analysis and Utilization of Hidden Information in Model Inversion Attacks](https://doi.org/10.1109/TIFS.2023.3295942)"
 * torchplus.nn.functional
   * Functional implenmentation of MSEWithWeightLoss and PixelLoss, just like torch.nn.functional.
 * torchplus.transforms

@@ -107,7 +107,7 @@ class Init(object):
 
     def __set_dir(self) -> None:
         if self.log_root_dir is not None:
-            current_time = datetime.datetime.now().strftime("%b%d_%H-%M-%S")
+            current_time = datetime.datetime.now().strftime("%Y%b%d_%H-%M-%S")
             suffix = current_time + "_" + gethostname() + "_" + self.comment
             if self.sep:
                 self.model_dir = os.path.join(self.log_root_dir, "Model_" + suffix)
