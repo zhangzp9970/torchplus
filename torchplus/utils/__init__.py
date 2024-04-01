@@ -8,6 +8,7 @@ from .utils import (
     read_image_to_tensor,
     hash_code,
     MMD,
+    model_size,
 )
 
 __all__ = (
@@ -21,4 +22,5 @@ __all__ = (
     "read_image_to_tensor",
     "hash_code",
     "MMD",
+    "model_size",
 )

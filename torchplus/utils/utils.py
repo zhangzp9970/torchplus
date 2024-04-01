@@ -1,4 +1,5 @@
 import torch
+import torch.nn as nn
 import os
 import pathlib
 from torch.utils.data import Dataset, Subset
@@ -118,3 +119,15 @@ def MMD(source, target, kernel_mul=2.0, kernel_num=5, fix_sigma=None):
     YX = kernels[batch_size:, :batch_size]
     loss = torch.mean(XX + YY - XY - YX)
     return loss
+
+
+def model_size(model: nn.Module):
+    # calculate model size. Reference: https://discuss.pytorch.org/t/finding-model-size/130275/2
+    param_size = 0
+    for param in model.parameters():
+        param_size += param.nelement() * param.element_size()
+    buffer_size = 0
+    for buffer in model.buffers():
+        buffer_size += buffer.nelement() * buffer.element_size()
+    size_all_mb = (param_size + buffer_size) / 1024**2
+    return size_all_mb

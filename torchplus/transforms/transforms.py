@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from torchvision.transforms.functional import *
+from torchvision.transforms.v2.functional import *
 
 
 class Crop(nn.Module):

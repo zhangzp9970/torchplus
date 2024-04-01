@@ -53,6 +53,7 @@ or using pypi `pip install tplus`
   * read_image_to_tensor -- Read a image into a tensor. Since the torchvision.io.read_image() can only read jpg and png images, which are not so useful in practice.
   * hash_code -- Return a hash code for a object, useful when you want to produce time-variant filenames without changing the code.
   * MMD -- Calculate the Maximum Mean Discrepancy of two batches of tensors. Code from the internet.
+  * model_size -- Calculate the size of the model. Refer to: [https://discuss.pytorch.org/t/finding-model-size/130275/2](https://discuss.pytorch.org/t/finding-model-size/130275/2).
 * continue developing...
 
 ## Acknowledgements
