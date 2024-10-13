@@ -3,8 +3,9 @@ from typing import Any, Callable, Optional
 from PIL import Image
 import torch
 from torch.utils.data import DataLoader, TensorDataset
-from torchvision.datasets import VisionDataset, ImageFolder
+from torchvision.datasets import VisionDataset, ImageFolder,DatasetFolder
 from tqdm import tqdm
+from ..data import DataZ, FILE_EXTENSIONS
 
 
 class FlatFolder(VisionDataset):
@@ -62,3 +63,31 @@ def PreProcessFolder(
         raise ValueError("loader not found! Use ImageFolder or FlatFolder.")
 
     return ds
+
+
+def dataz_loader(path: str) -> Any:
+    dataz = DataZ()
+    dataz.load(path)
+    return (dataz.data, dataz.label, dataz.properties)
+
+
+class DataZFolder(DatasetFolder):
+    def __init__(
+        self,
+        root: str,
+        transform: Optional[Callable] = None,
+        target_transform: Optional[Callable] = None,
+        loader: Callable[[str], Any] = dataz_loader,
+        is_valid_file: Optional[Callable[[str], bool]] = None,
+        allow_empty: bool = False,
+    ):
+        super().__init__(
+            root,
+            loader,
+            FILE_EXTENSIONS if is_valid_file is None else None,
+            transform=transform,
+            target_transform=target_transform,
+            is_valid_file=is_valid_file,
+            allow_empty=allow_empty,
+        )
+        self.imgs = self.samples

@@ -23,11 +23,14 @@ or using pypi `pip install tplus`
 
 ## Features
 
+* torchplus.data
+  * DataZ -- The self-defined data format **.dataz** that combines the images (in tensor format) with its properties. Useful in tasks that requires different properties or attributes of the images.
 * torchplus.datasets
   * KSDD -- [KolektorSDD](http://go.vicos.si/kolektorsdd) dataset loader, compatible with other torchvision APIs.
   * KSDD2 --[KolektorSDD2](http://go.vicos.si/kolektorsdd2) dataset loader, compatible with other torchvision APIs.
   * FlatFolder -- A dataset class to handle flat folders with no sub directories, such as CelebA and FFHQ.
   * PreProcessFolder -- Preload the image data from disk into system memory to accelerate training.
+  * DataZFolder -- Data loader to load the .dataz data arranged in folder tree way.
 * torchplus.distributed
   * FederatedAverage -- Implements the federated average algorithm.
 * torchplus.models
@@ -62,7 +65,7 @@ Inspired by [easydl](https://pypi.org/project/easydl/) project from Tsinghua Uni
 
 ## License
 
-Copyright © 2021-2023 Zeping Zhang
+Copyright © 2021-2024 Zeping Zhang
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
