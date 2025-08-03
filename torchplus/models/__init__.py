@@ -11,6 +11,7 @@ from .resnet import (
     ResNet101FE_Dim,
     ResNet152FE_Dim,
 )
+from .vgg import VGGFE, vgg11fe, vgg13fe, vgg16fe, vgg19fe, VGGFE_Dim
 
 __all__ = (
     "ResNetFE",
@@ -24,4 +25,10 @@ __all__ = (
     "ResNet50FE_Dim",
     "ResNet101FE_Dim",
     "ResNet152FE_Dim",
+    "VGGFE",
+    "vgg11fe",
+    "vgg13fe",
+    "vgg16fe",
+    "vgg19fe",
+    "VGGFE_Dim",
 )

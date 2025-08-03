@@ -7,7 +7,7 @@ sys.path.append(parent_dir)
 
 setup(
     name="tplus",
-    version="0.1.9.2",
+    version="0.1.9.3",
     author="Zeping Zhang",
     license="GPL-v3",
     author_email="zhangzp9970@outlook.com",

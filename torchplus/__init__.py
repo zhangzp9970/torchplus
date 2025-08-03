@@ -5,7 +5,6 @@ from torchplus import transforms
 from torchplus import distributed
 from torchplus import models
 from torchplus import data
-from .version import __version__ as __version__
 from pkg_resources import parse_version
 
 try:
