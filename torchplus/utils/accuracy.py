@@ -1,6 +1,5 @@
 from typing import Optional, Dict, TypeVar
 import torch
-import torch.nn.functional as F
 
 T_torchplus = TypeVar("T_torchplus", torch.Tensor, Dict)
 

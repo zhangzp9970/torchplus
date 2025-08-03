@@ -4,22 +4,16 @@
 
 torchplus is a utilities library that extends pytorch and torchvision
 
-[![Anaconda-Server Badge](https://anaconda.org/zhangzp9970/torchplus/badges/version.svg)](https://anaconda.org/zhangzp9970/torchplus)
-[![Anaconda-Server Badge](https://anaconda.org/zhangzp9970/torchplus/badges/latest_release_date.svg)](https://anaconda.org/zhangzp9970/torchplus)
-[![Anaconda-Server Badge](https://anaconda.org/zhangzp9970/torchplus/badges/latest_release_relative_date.svg)](https://anaconda.org/zhangzp9970/torchplus)
-[![Anaconda-Server Badge](https://anaconda.org/zhangzp9970/torchplus/badges/platforms.svg)](https://anaconda.org/zhangzp9970/torchplus)
-[![Anaconda-Server Badge](https://anaconda.org/zhangzp9970/torchplus/badges/license.svg)](https://anaconda.org/zhangzp9970/torchplus)
-[![Anaconda-Server Badge](https://anaconda.org/zhangzp9970/torchplus/badges/downloads.svg)](https://anaconda.org/zhangzp9970/torchplus)
-
 ## Install
 
 Install [Anaconda](https://www.anaconda.com/) or [Python](https://www.python.org/)
 
-Install Pytorch using the commands from the [official pytorch page](https://pytorch.org/)
+Install Pytorch using the commands from the [official pytorch page](https://pytorch.org/). As pytorch removes their official conda channel since 2.6, we will also not update the conda channel.
 
-Install torchplus using conda (recommended) `conda install torchplus -c zhangzp9970`
+Install torchplus using pypi `pip install tplus` (recommended) 
 
-or using pypi `pip install tplus`
+deprecated conda channel `conda install torchplus -c zhangzp9970`
+
 
 ## Features
 
@@ -65,7 +59,7 @@ Inspired by [easydl](https://pypi.org/project/easydl/) project from Tsinghua Uni
 
 ## License
 
-Copyright © 2021-2024 Zeping Zhang
+Copyright © 2021-2025 Zeping Zhang
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

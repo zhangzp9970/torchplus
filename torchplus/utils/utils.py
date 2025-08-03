@@ -3,10 +3,8 @@ import torch.nn as nn
 import os
 import pathlib
 from torch.utils.data import Dataset, Subset
-from typing import Any, BinaryIO, List, Optional, Tuple, Union
+from typing import Any, BinaryIO, List, Optional, Union
 import pandas as pd
-from PIL import Image
-from torchvision.transforms.functional import to_tensor, to_grayscale
 from torchvision.utils import save_image
 from base64 import b64encode
 
@@ -69,15 +67,6 @@ def save_image2(
     os.makedirs(dir, exist_ok=True)
     save_image(tensor, fp, format, **kwargs)
 
-
-def read_image_to_tensor(path: str, grayscale: bool = False) -> torch.Tensor:
-    img = Image.open(path)
-    if grayscale:
-        img = to_grayscale(img, num_output_channels=1)
-    im = to_tensor(img)
-    return im
-
-
 def hash_code(obj: object) -> str:
     return b64encode(str(hash(obj)).encode()).decode()[0:7]
 
@@ -104,7 +93,7 @@ def __guassian_kernel(source, target, kernel_mul=2.0, kernel_num=5, fix_sigma=No
     return sum(kernel_val)
 
 
-def MMD(source, target, kernel_mul=2.0, kernel_num=5, fix_sigma=None):
+def MMD(source, target, kernel_mul=2.0, kernel_num=5, fix_sigma=None)->torch.Tensor:
     batch_size = int(source.size()[0])
     kernels = __guassian_kernel(
         source,
