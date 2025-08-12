@@ -45,7 +45,7 @@ class DataZ(object):
             torch.save(self, f)
 
     def load(self, fp: Union[str, pathlib.Path, BinaryIO] = None) -> None:
-        dataz = torch.load(fp)
+        dataz = torch.load(fp,weights_only=False)
         self.data = dataz.data
         self.label = dataz.label
         self.properties = dataz.properties
