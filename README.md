@@ -1,8 +1,8 @@
+# TorchPlus
+
+TorchPlus is a utilities library that extends pytorch and torchvision
+
 ![torchplus](./doc/images/torchplus.svg)
-
-# torchplus
-
-torchplus is a utilities library that extends pytorch and torchvision
 
 ## Install
 
@@ -11,9 +11,6 @@ Install [Anaconda](https://www.anaconda.com/) or [Python](https://www.python.org
 Install Pytorch using the commands from the [official pytorch page](https://pytorch.org/). As pytorch removes their official conda channel since 2.6, we will also not update the conda channel.
 
 Install torchplus using pypi `pip install tplus` (recommended) 
-
-deprecated conda channel `conda install torchplus -c zhangzp9970`
-
 
 ## Features
 
